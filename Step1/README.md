@@ -46,7 +46,7 @@ ansible-playbook docker-registry.yml
 - Espone la porta 5000 del container sulla porta 5000 della macchina locale.
 - Il container si riavvierà automaticamente in caso di arresto o riavvio del sistema.
 
-### Verifica
+### Verifica
 
 Dopo l’esecuzione, puoi testare il registry con:
 ```
