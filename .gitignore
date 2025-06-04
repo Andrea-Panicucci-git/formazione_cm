@@ -1,0 +1,3 @@
+# Ignora le chiavi SSH nella cartella Alpine
+docker/Alpine/id_key_genericuser
+docker/Alpine/id_key_genericuser.pub
