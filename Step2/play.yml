@@ -1,0 +1,41 @@
+- name: Build containers images
+  hosts: localhost
+  connection: local
+  tasks:
+  
+    - name: Build Ubuntu container image
+      community.docker.docker_image:
+        name: my_ubuntu_ssh
+        tag: latest
+        source: build
+        build:
+          path: ./docker/Ubuntu
+          dockerfile: Dockerfile
+          pull: true 
+    - name: Run ubuntu ssh container
+      community.docker.docker_container:
+        name: my_ubuntu_ssh
+        image: my_ubuntu_ssh
+        state: started
+        ports:
+          - "2222:22"
+   
+    - name: Build Ubuntu container image
+      community.docker.docker_image:
+        name: my_alpine_ssh
+        tag: latest
+        source: build
+        build:
+          path: ./docker/Alpine
+          dockerfile: Dockerfile
+          pull: true 
+    - name: Run ubuntu ssh container
+      community.docker.docker_container:
+        name: my_alpine_ssh
+        image: my_alpine_ssh
+        state: started
+        ports:
+          - "2223:22"
+   
+
+
