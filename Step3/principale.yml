@@ -1,0 +1,7 @@
+- name: Step 3 - Full Container Pipeline
+  hosts: localhost
+  connection: local
+  roles:
+    - role: registry_setup
+    - role: build_and_push_images
+    - role: run_containers

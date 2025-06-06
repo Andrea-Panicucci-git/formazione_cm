@@ -1,0 +1,7 @@
+containers:
+  - name: Ubuntu
+    image: "localhost:5000/my_ubuntu_ssh:latest"
+    port: 8080
+  - name: Alpine
+    image: "localhost:5000/my_alpine_ssh:latest"
+    port: 8081

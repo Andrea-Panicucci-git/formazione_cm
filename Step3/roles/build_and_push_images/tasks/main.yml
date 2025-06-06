@@ -1,0 +1,58 @@
+- name: Detect container engine
+  block:
+    - name: Check Docker
+      command: which docker
+      register: docker_check
+      ignore_errors: true
+
+    - name: Check Podman
+      command: which podman
+      register: podman_check
+      ignore_errors: true
+
+    - name: Set container engine fact
+      set_fact:
+        engine: "{{ 'docker' if docker_check.rc == 0 else 'podman' if podman_check.rc == 0 else 'none' }}"
+
+    - name: Fail if no container engine
+      fail:
+        msg: "Docker o Podman non sono installati."
+      when: engine == 'none'
+
+    - name: Build and push Ubuntu container image
+      community.docker.docker_image:
+        name: localhost:5000/my_ubuntu_ssh
+        tag: latest
+        source: build
+        build:
+          path: /Users/andreapanicucci/Desktop/formazione_cm/Step3/Ubuntu
+          dockerfile: Dockerfile
+          pull: true
+        push: true
+
+    - name: Run Ubuntu ssh container
+      community.docker.docker_container:
+        name: my_ubuntu_ssh
+        image: localhost:5000/my_ubuntu_ssh:latest
+        state: started
+        ports:
+          - "2222:22"
+   
+    - name: Build and push Alpine container image
+      community.docker.docker_image:
+        name: localhost:5000/my_alpine_ssh
+        tag: latest
+        source: build
+        build:
+          path: /Users/andreapanicucci/Desktop/formazione_cm/Step3/Alpine
+          dockerfile: Dockerfile
+          pull: true
+        push: true
+
+    - name: Run Alpine ssh container
+      community.docker.docker_container:
+        name: my_alpine_ssh
+        image: localhost:5000/my_alpine_ssh:latest
+        state: started
+        ports:
+          - "2223:22"

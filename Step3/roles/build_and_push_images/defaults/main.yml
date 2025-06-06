@@ -1,0 +1,11 @@
+---
+registry_host: "localhost:5000"
+images:
+  - name: ubuntu
+    context: "/Users/andreapanicucci/Desktop/formazione_cm/Step3/Ubuntu"
+    dockerfile: "Dockerfile"
+    tag: "v1"
+  - name: alpine
+    context: "/Users/andreapanicucci/Desktop/formazione_cm/Step3/Alpine"
+    dockerfile: "Dockerfile"
+    tag: "v1"

@@ -1,0 +1,29 @@
+- name: Detect container engine (again)
+  block:
+    - name: Check Docker
+      command: which docker
+      register: docker_check
+      ignore_errors: true
+
+    - name: Check Podman
+      command: which podman
+      register: podman_check
+      ignore_errors: true
+
+    - name: Set engine fact
+      set_fact:
+        engine: "{{ 'docker' if docker_check.rc == 0 else 'podman' if podman_check.rc == 0 else 'none' }}"
+
+    - name: Fail if no engine
+      fail:
+        msg: "Nessun motore container trovato."
+      when: engine == 'none'
+
+- name: Run containers
+  loop: "{{ containers }}"
+  vars:
+    container_name: "{{ item.name }}"
+    image_name: "{{ item.image }}"
+    port: "{{ item.port }}"
+  command: >
+    {{ engine }} run -d --name {{ container_name }} -p {{ port }}:80 {{ image_name }}

@@ -1,0 +1,23 @@
+---
+- name: Setup di un Docker Registry
+  hosts: localhost
+  become: true
+  tasks:
+
+    # Avvia il registry su porta 5000
+    - name: Avvia un container Docker registry
+      community.docker.docker_container:
+        name: registry
+        image: registry:2
+        state: started
+        restart_policy: always
+        published_ports:
+          - 5000:5000
+      when: docker_check.rc == 0
+
+    - name: Ensure registry container is running with Podman
+      command: >
+        podman run -d --name local_registry -p 5000:5000 --restart=always registry:2
+      args:
+        creates: /var/lib/containers/storage/overlay-containers
+      when: podman_check.rc == 0
