@@ -1,2 +1,2 @@
 
-![Esecuzione playbook.yml](image1)
+![Esecuzione playbook.yml](image1.png)
