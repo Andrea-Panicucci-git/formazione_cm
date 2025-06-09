@@ -1,0 +1,11 @@
+---
+- name: Esempio uso Ansible Vault
+  hosts: localhost
+  gather_facts: false
+  vars_files:
+    - vars.yml
+  tasks:
+    - name: Mostra la password criptata
+      debug:
+        msg: "La password del DB è: {{ db_password }}"
+
