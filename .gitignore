@@ -3,3 +3,4 @@ docker/Alpine/id_key_genericuser
 .DS_Store
 docker/Alpine/id_key_genericuser.pub
 image1
+.vault
