@@ -31,5 +31,9 @@ Integrare Vault nei playbook permette di mantenere la sicurezza senza rinunciare
 
 ---
 
-## Esecuzione playbook `ansible-playbook -i localhost, playbook.yml`
+##  Esecuzione playbook 
+
+```bash
+ansible-playbook -i localhost, playbook.yml
+```
 ![Esecuzione playbook.yml](image1.png)
