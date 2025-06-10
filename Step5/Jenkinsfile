@@ -1,0 +1,41 @@
+pipeline {
+    agent any
+    
+    environment {
+        IMAGE_NAME = 'andreapanicucci/my_alpine_ssh'
+        REGISTRY = 'localhost:5000'
+        REGISTRY_CREDENTIALS = 'dockerhub'
+        TAG = "${env.BUILD_NUMBER}"
+    }
+    
+    stages {
+        stage('Build and Login') {
+            steps {
+                script {
+                    withCredentials([usernamePassword(credentialsId: "${REGISTRY_CREDENTIALS}", usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                        sh """
+                            echo \$PASSWORD | docker login -u \$USERNAME --password-stdin ${REGISTRY}
+                            docker build -t ${IMAGE_NAME}:${TAG} .
+                        """
+                    }
+                }
+            }
+        }
+
+        stage('Push Image') {
+            steps {
+                script {
+                    docker.withRegistry("https://${REGISTRY}", REGISTRY_CREDENTIALS) {
+                        docker.image("${IMAGE_NAME}:${TAG}").push()
+                    }
+                }
+            }
+        }
+    }
+    
+    post {
+        always {
+            echo "Build ${env.BUILD_NUMBER} completata"
+        }
+    }
+}

@@ -4,3 +4,5 @@ docker/Alpine/id_key_genericuser
 docker/Alpine/id_key_genericuser.pub
 Step4/image1.png
 .vault
+.vagrant 
+./vagrant 
