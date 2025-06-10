@@ -1,4 +1,4 @@
-# [Track 3] Configuration Management:
+# Configuration Management:
 
 - Docker o Podman
 - Jenkins
