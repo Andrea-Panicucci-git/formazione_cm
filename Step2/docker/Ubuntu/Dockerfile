@@ -9,29 +9,29 @@ RUN apt-get update \
 RUN apt-get update && apt-get install -y sudo
 
 # Aggiungi utente genericuser ai sudoers  e mkdir 
-RUN useradd -m -s /bin/bash genericuser && \
+RUN useradd -m -s /bin/bash vagrant && \
     mkdir -p /etc/sudoers.d && \
-    echo 'genericuser ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers.d/genericuser && \
-    chmod 440 /etc/sudoers.d/genericuser \
-    && mkdir -p /home/genericuser/.ssh/
+    echo 'vagrant ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers.d/vagrant && \
+    chmod 440 /etc/sudoers.d/vagrant \
+    && mkdir -p /home/vagrant/.ssh/
 
 
 
-COPY id_key_genericuser.pub  /home/genericuser/.ssh/authorized_keys
+COPY key/id_rsa.pub  /home/vagrant/.ssh/authorized_keys
 
 # Gestire permessi e prorpretari 
-RUN chown -R genericuser:genericuser /home/genericuser \
-    && chmod 700 /home/genericuser/.ssh \
-    && chmod 600 /home/genericuser/.ssh/authorized_keys \
-    && chown -R genericuser:genericuser /home/genericuser/.ssh \
-    && chown genericuser:genericuser /home/genericuser/.ssh/authorized_keys
+RUN chown -R vagrant:vagrant /home/vagrant \
+    && chmod 700 /home/vagrant/.ssh \
+    && chmod 600 /home/vagrant/.ssh/authorized_keys \
+    && chown -R vagrant:vagrant /home/vagrant/.ssh \
+    && chown vagrant:vagrant /home/vagrant/.ssh/authorized_keys
 
 # Configure SSH to allow key-based authentication
 RUN mkdir /var/run/sshd && \
     sed -i 's/PermitRootLogin yes/PermitRootLogin no/' /etc/ssh/sshd_config && \
     sed -i 's/#PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config && \
     sed -i 's/#PubkeyAuthentication yes/PubkeyAuthentication yes/' /etc/ssh/sshd_config && \
-    echo 'AllowUsers genericuser' >> /etc/ssh/sshd_config
+    echo 'AllowUsers vagrant' >> /etc/ssh/sshd_config
 EXPOSE 22
 
 CMD ["/usr/sbin/sshd", "-D"]
